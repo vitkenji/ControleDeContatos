@@ -7,7 +7,10 @@
     <h1 class="display-4">Editar Contato</h1>
 </div>
 
-<form>
+<form asp-controller="Contato" asp-action="Alterar" method="post">
+
+    <input type="hidden" asp-for="Id" />
+
     <div class="form-group">
         <label for="Nome">Nome</label>
         <input type="text" asp-for="Nome" class="form-control" placeholder="Digite seu Nome" />

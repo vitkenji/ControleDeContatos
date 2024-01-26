@@ -24,5 +24,38 @@ namespace ControleDeContatos.Repositorio
         {
             return _bancoContext.Contatos.ToList();
         }
+
+        public ContatoModel ListarPorId(int id)
+        {
+            return _bancoContext.Contatos.FirstOrDefault(x => x.Id == id);
+        
+        }
+
+        public ContatoModel Atualizar(ContatoModel contato)
+        {
+            ContatoModel contatoDb = ListarPorId(contato.Id);
+
+            if(contatoDb == null) { throw new System.Exception(""); }
+
+            contatoDb.Nome = contato.Nome;
+            contatoDb.Email = contato.Email;
+            contatoDb.Celular = contato.Celular;
+
+            _bancoContext.Contatos.Update(contatoDb);
+            _bancoContext.SaveChanges();
+            return contatoDb;
+        }
+
+       public bool Apagar(int id)
+       {
+            ContatoModel contatoDb = ListarPorId(id);
+
+            if (contatoDb == null) { throw new System.Exception(""); }
+
+            _bancoContext.Contatos.Remove(contatoDb);
+            _bancoContext.SaveChanges();
+
+            return true;
+        }
     }
 }
