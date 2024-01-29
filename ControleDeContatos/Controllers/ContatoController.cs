@@ -35,21 +35,59 @@ namespace ControleDeContatos.Controllers
         [HttpPost]
         public IActionResult Criar(ContatoModel contato)
         {
-            _contatoRepositorio.Adicionar(contato);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _contatoRepositorio.Adicionar(contato);
+                    TempData["MensagemSucesso"] = "Contato Adicionado";
+                    return RedirectToAction("Index");
+                }
+                return View(contato);
+            }
+            catch(System.Exception)
+            {
+                TempData["MensagemErro"] = "Erro ao cadastrar contato";
+                return RedirectToAction("Index");
+            }
+
         }
 
         [HttpPost]
         public IActionResult Alterar(ContatoModel contato)
         {
-            _contatoRepositorio.Atualizar(contato);
-            return RedirectToAction("Index");
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _contatoRepositorio.Atualizar(contato);
+                    TempData["MensagemSucesso"] = "Contato Editado";
+                    return RedirectToAction("Index");
+
+                }  TempData["MensagemErro"] = "Erro ao editar contato";
+                return RedirectToAction("Index");
+                return View("Editar", contato);
+            }
+            catch(System.Exception)
+            {
+                TempData["MensagemErro"] = "Erro ao editar contato";
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Apagar(int id)
         {
-            _contatoRepositorio.Apagar(id);
-            return RedirectToAction("Index");
+            try
+            {
+                _contatoRepositorio.Apagar(id);
+                TempData["MensagemSucesso"] = "Contato deletado";
+                return RedirectToAction("Index");
+            }
+            catch(System.Exception)
+            {
+                TempData["MensagemErro"] = "Erro ao apagar contato";
+                return RedirectToAction("Index");
+            }
         }
     }
 }
